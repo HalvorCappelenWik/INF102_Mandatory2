@@ -3,7 +3,7 @@
 Briefly describe your implementation of the different methods. What was your idea and how did you execute it? If there were any problems and/or failed implementations please add a description.
 
 ## Task 1 - mst
-*Enter description*
+*Enter description* 
 
 ## Task 2 - lca
 *Enter description*
