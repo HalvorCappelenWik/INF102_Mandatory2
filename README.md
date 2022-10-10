@@ -8,7 +8,7 @@ All code you submit will be evaluated on four points:
  - **Runtime analysis**. For each method you code you will need to add a comment about which Big-O runtime it has.
  - **Code quality**. Is you code readable and maintainable?
 
-**IMPORTANT**: When implementing the code you must give a runtime analysis in [svar.md](svar.md).
+**IMPORTANT**: When implementing the code you must give a runtime analysis in [Svar.md](Svar.md).
 
 
 ### Scenario
