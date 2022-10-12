@@ -28,7 +28,9 @@ After the power grid has been built the power company has recieved a number of i
 
 Given two nodes ``u`` and ``v`` find a node to conduct the outage search from. The error must have occurred in a cable which connects both nodes to the same connected component as the power plant. This problem in the litterature is called *Lowest Common Ancestor* (LCA). The optimal datastructure for LCA (which you can find by googling) is not part of the INF102 curriculum. You are not required to implement the optimal algorithm, but rather you are to implement a simple algorithm. It is possible to find a solution which runs in *O(n)*.
 
-**Implement ``IProblem::lca``.** By passing ``ProblemSolverLCATest`` you will get full points for functionality.
+**Implement ``IProblem::lca``.** By passing ``ProblemSolverLCATest`` you will get full points for functionality. To get full points for the task your solution also has to be efficient.
+
+
 ### Task 3
 After many complaints the power company has realised that the cheapest solution is not always the best. In a new attempt to solve the problem they will be adding an extra cable (an extra edge) to the network (graph). The goal is to have an outage impact the least amount of houses. One faulty cable can cause a large number of houses to lose power. You are to find a pair of nodes which by adding a cable between them will minimize the number of houses affected if another cable fails. 
 
