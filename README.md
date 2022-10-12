@@ -3,10 +3,10 @@
 This assignment has three tasks.
 
 All code you submit will be evaluated on four points:
- - **Functional correctness**. Does the program do what it is supposed to do?
- - **Runtime**. Have you found an efficient solution to the program?
- - **Runtime analysis**. For each method you code you will need to add a comment about which Big-O runtime it has.
- - **Code quality**. Is you code readable and maintainable?
+ - **Functional correctness**: Does the program do what it is supposed to do?
+ - **Runtime**: Have you found an efficient solution to the program?
+ - **Runtime analysis**: For each method you code you will need to add a comment about which Big-O runtime it has.
+ - **Code quality**: Is you code readable and maintainable?
 
 **IMPORTANT**: When implementing the code you must give a description of your solution and a runtime analysis in [Svar.md](Svar.md).
 
