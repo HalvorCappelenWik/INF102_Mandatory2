@@ -14,7 +14,7 @@ All code you submit will be evaluated on four points:
 ### Scenario
 A power company is building a power grid in the town of Flåklypa.
 All houses which is in need of electricity has to be connected to the power grid, and a plan must be in place in case of power outages.
-In this semester assignment your job is to aid in the development of this power grid. In reality such a grid would be built using a variation of different power cables dependent on the power needs of the respective parts of the grid. In this assignment we simplify the task by saying there is only one type of power cable and that it does not matter how many houses are connected though the same cable. Throughout this assignment we will be implementing ``IProblem``.
+In this semester assignment your job is to aid in the development of this power grid. In reality such a grid would be built using a variation of different power cables dependent on the power needs of the respective parts of the grid. In this assignment we simplify the task by saying there is only one type of power cable and that it does not matter how many houses are connected through the same cable. Throughout this assignment we will be implementing ``IProblem``.
 
 ### Task 1
 The power company has gathered information on all the houses which needs to be connected to the grid. In addition, they have mapped for each pair of connected houses how expensive the cable between them will be. This has been modelled as a weighted graph where each node is a house and a cable between houses is an edge with a weight for cost of that cable. The company wants to construct the power grid with the smallest cost possible while supplying all houses with electricity. Which cables should be used in the network?
