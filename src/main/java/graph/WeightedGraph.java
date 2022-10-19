@@ -16,7 +16,6 @@ import java.util.HashMap;
 public class WeightedGraph<V, E extends Comparable<E>> extends Graph<V> implements Comparator<Edge<V>> {
 
 	private HashMap<Edge<V>, E> edgeWeight;
-
 	/**
 	 * Constructs an empty weighted graph
 	 */

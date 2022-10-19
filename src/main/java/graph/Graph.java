@@ -102,7 +102,7 @@ public class Graph<V> implements IGraph<V> {
 	/**
 	 * @return number of edges in the graph
 	 */
-	public int numEdges() {
+	public int numEdges()  {
 		return edges;
 	}
 
