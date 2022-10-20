@@ -44,17 +44,16 @@ public class ProblemSolver implements IProblem {
 
 		@Override
 	public <V> V lca(Graph<V> g, V root, V u, V v) {
+
 		new BFS();
 		HashMap<V, V> breadthFirstSearch = BFS.parents(g,root);
-		System.out.println(breadthFirstSearch);
 
 		ArrayList<V> pathToU = path(u, breadthFirstSearch);
 		ArrayList<V> pathToV = path(v, breadthFirstSearch);
 
 
-		HashSet<V> SetPathU = new HashSet<>(pathToU);
 		for (V node : pathToV) {
-			if (SetPathU.contains(node))
+			if (pathToU.contains(node))
 				return node;
 		}
 		throw new IllegalArgumentException("No LCA found");
@@ -67,21 +66,84 @@ public class ProblemSolver implements IProblem {
 			path.add(parent);
 			parent = breadthFirstSearch.get(parent);
 		}
-		System.out.println(path);
 		return path;
 	}
 
 
 
 
-
-
-
 	@Override
 	public <V> Edge<V> addRedundant(Graph<V> g, V root) {
-		throw new UnsupportedOperationException();
-		// Task 3
-		// TODO: Implement me :)
+		HashMap<V,Integer> count = new HashMap<>();
+		HashMap<V,ArrayList<V>> neighbours = new HashMap<>();
+		HashSet<V> visited = new HashSet<>();
+
+		size(g, root, count, visited, neighbours);
+
+		ArrayList<V> leaves = new ArrayList<>();
+		ArrayList<V> nodes = new ArrayList<>();
+
+		for (V n : g.neighbours(root)){
+			nodes.add(n);
+		}
+
+		HashSet<V> subTrees = new HashSet<>();
+		Comparator<V> compareSize = Comparator.comparingInt(count::get);
+		nodes.sort(Collections.reverseOrder(compareSize));
+		subTrees.add(nodes.get(0));
+
+
+		if (g.degree(root) > 1){
+			subTrees.add(nodes.get(1));
+		} else {
+			leaves.add(root);
+		}
+
+
+
+
+		for (V rootNode : subTrees){
+			while (g.degree(rootNode) != 1){
+				int i = 0;
+				V newNode = null;
+
+				for (V neighbor : neighbours.get(rootNode)){
+					if (count.get(neighbor) > i){
+						i = count.get(neighbor);
+						newNode = neighbor;
+					}
+				}
+				rootNode = newNode;
+
+			}
+			leaves.add(rootNode);
+		}
+		return new Edge<>(leaves.get(0),leaves.get(1));
 	}
 
+
+	/**
+	 * modified size-method from PowerOutage class in Main.Test.problemsolver package
+	 * @param g
+	 * @param node
+	 * @param count
+	 * @param visited
+	 * @param neighbours
+	 * @return
+	 * @param <V>
+	 */
+	public <V> int size(Graph<V> g, V node, HashMap <V, Integer> count, HashSet <V> visited, HashMap <V, ArrayList<V>> neighbours ){
+		int counter = 1;
+		visited.add(node);
+		ArrayList<V> n = new ArrayList<>();
+		for(V children : g.neighbours(node)){
+			if(!visited.contains(children)){
+				n.add(children);
+				counter += size(g, children, count, visited, neighbours);
+			}
+		}
+		neighbours.put(node,n);
+		count.put(node, counter);
+		return counter;
+	}
 }
