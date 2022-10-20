@@ -64,4 +64,10 @@ public class Edge<V> {
 	public String toString() {
 		return "(" + a.toString() + " -- " + b.toString() + ")";
 	}
+
+	public V getOtherNode(V v) {
+		if (a == v) return b;
+		if (b == v) return a;
+		throw new IllegalArgumentException(v+"is not an endpoint of this edge");
+	}
 }

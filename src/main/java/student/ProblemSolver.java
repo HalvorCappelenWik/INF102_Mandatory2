@@ -42,13 +42,40 @@ public class ProblemSolver implements IProblem {
 		}
 	}
 
-
 		@Override
 	public <V> V lca(Graph<V> g, V root, V u, V v) {
-		throw new UnsupportedOperationException();
-		// Task 2
-		// TODO: Implement me :)
+		new BFS();
+		HashMap<V, V> breadthFirstSearch = BFS.parents(g,root);
+		System.out.println(breadthFirstSearch);
+
+		ArrayList<V> pathToU = path(u, breadthFirstSearch);
+		ArrayList<V> pathToV = path(v, breadthFirstSearch);
+
+
+		HashSet<V> SetPathU = new HashSet<>(pathToU);
+		for (V node : pathToV) {
+			if (SetPathU.contains(node))
+				return node;
+		}
+		throw new IllegalArgumentException("No LCA found");
+		}
+
+
+	private <V> ArrayList<V> path(V parent, HashMap<V,V> breadthFirstSearch) {
+		ArrayList<V> path = new ArrayList<>();
+		while (parent != null) {
+			path.add(parent);
+			parent = breadthFirstSearch.get(parent);
+		}
+		System.out.println(path);
+		return path;
 	}
+
+
+
+
+
+
 
 	@Override
 	public <V> Edge<V> addRedundant(Graph<V> g, V root) {
