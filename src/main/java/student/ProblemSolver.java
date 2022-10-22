@@ -13,32 +13,32 @@ public class ProblemSolver implements IProblem {
 		if (g.numEdges() < 1) {return mstEdges;}
 
 		HashSet<V> found = new HashSet<>(g.numVertices());
-		PriorityQueue<Edge<V>> sortedEdges = new PriorityQueue<>(g);
+		PriorityQueue<Edge<V>> toSearch = new PriorityQueue<>(g);
 		V start = g.vertices().iterator().next();
 		found.add(start);
 
 		for (Edge<V> edge : g.adjacentEdges(start)) {
-			sortedEdges.add(edge);
+			toSearch.add(edge);
 		}
 
-		while(!sortedEdges.isEmpty()) {
-			Edge<V> e = sortedEdges.poll();
+		while(!toSearch.isEmpty()) {
+			Edge<V> next = toSearch.poll();
 
-			if (found.contains(e.a) && found.contains(e.b)) continue;
+			if (found.contains(next.a) && found.contains(next.b)) continue;
 
-			mstEdges.add(e);
+			mstEdges.add(next);
 
-			isVisited(g, e.a, found, sortedEdges);
-			isVisited(g, e.b, found, sortedEdges);
+			isVisited(g, next.a, found, toSearch);
+			isVisited(g, next.b, found, toSearch);
 
 		}
 		return mstEdges;
 	}
 
-	private  <V, E extends Comparable<E>> void isVisited(WeightedGraph<V, E> g, V node, HashSet<V> found, PriorityQueue<Edge<V>> sortedEdges) {
+	private  <V, E extends Comparable<E>> void isVisited(WeightedGraph<V, E> g, V node, HashSet<V> found, PriorityQueue<Edge<V>> toSearch) {
 		found.add(node);
 		for (Edge<V> edge : g.adjacentEdges(node)) {
-			sortedEdges.add(edge);
+			toSearch.add(edge);
 		}
 	}
 
@@ -46,7 +46,7 @@ public class ProblemSolver implements IProblem {
 	public <V> V lca(Graph<V> g, V root, V u, V v) {
 
 		new BFS();
-		HashMap<V, V> breadthFirstSearch = BFS.parents(g,root);
+		HashMap<V, V> breadthFirstSearch = BFS.bfs(g,root);
 
 		ArrayList<V> pathToU = path(u, breadthFirstSearch);
 		ArrayList<V> pathToV = path(v, breadthFirstSearch);
@@ -92,14 +92,11 @@ public class ProblemSolver implements IProblem {
 		nodes.sort(Collections.reverseOrder(compareSize));
 		subTrees.add(nodes.get(0));
 
-
 		if (g.degree(root) > 1){
 			subTrees.add(nodes.get(1));
 		} else {
 			leaves.add(root);
 		}
-
-
 
 
 		for (V rootNode : subTrees){

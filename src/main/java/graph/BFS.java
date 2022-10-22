@@ -6,17 +6,16 @@ import java.util.LinkedList;
 
 public class BFS {
 
-    public static <T> HashMap<T,T> parents(Graph<T> g, T root) {
+    public static <T> HashMap<T,T> bfs(Graph<T> g, T root) {
         HashSet<T> found = new HashSet<>();
         LinkedList<Edge<T>> toSearch = new LinkedList<>();
         HashMap<T,T> parents = new HashMap<>();
         parents.put(root, null);
         update(g,found,toSearch,root);
 
-
         while (!toSearch.isEmpty()) {
             Edge<T> e = toSearch.removeFirst();
-            T foundNode = getFoundNode(e, found);
+            T foundNode = foundNode(e, found);
             T newNode = e.getOtherNode(foundNode);
 
             if (found.contains(newNode)) continue;
@@ -27,7 +26,7 @@ public class BFS {
         return parents;
     }
 
-    private static <T> T getFoundNode(Edge<T> e, HashSet<T> found) {
+    private static <T> T foundNode(Edge<T> e, HashSet<T> found) {
         if (found.contains(e.a)) return e.a;
         if (found.contains(e.b)) return e.b;
         throw new IllegalArgumentException("e should have an endpoint in found");
