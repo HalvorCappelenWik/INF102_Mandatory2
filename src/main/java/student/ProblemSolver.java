@@ -35,6 +35,7 @@ public class ProblemSolver implements IProblem {
 		return mstEdges;
 	}
 
+
 	/**
 	 * Adds a node to a list.
 	 * Adds all the edges which has endpoint equal to the given node in a list.
@@ -59,18 +60,20 @@ public class ProblemSolver implements IProblem {
 		ArrayList<V> pathToU = path(u, bfs);
 		ArrayList<V> pathToV = path(v, bfs);
 
+
 		for (V node : pathToV) {
-			if (pathToU.contains(node))
+			if (new HashSet<>(pathToU).contains(node))
 				return node;
 		}
 		throw new IllegalArgumentException("No LCA found");
 		}
 
+
 	/**
-	 * Finds a path form node to source of graph with the help of bfs.
-	 * @param node the node to start the path
-	 * @param bfs hashmap of nodes and parents constructed with bfs.
-	 * @return path represented as an arraylist of nodes
+	 * Creates a path from a node to the root.
+	 * @param node the node to start from
+	 * @param bfs the map of each node to its parent in the search tree
+	 * @return the path from the node to the root
 	 */
 	private <V> ArrayList<V> path(V node, HashMap<V,V> bfs) {
 		ArrayList<V> path = new ArrayList<>();
@@ -82,15 +85,13 @@ public class ProblemSolver implements IProblem {
 	}
 
 
-
-
 	@Override
 	public <V> Edge<V> addRedundant(Graph<V> g, V root) {
-		HashMap<V,Integer> count = new HashMap<>();
+		HashMap<V,Integer> SubtreeSize = new HashMap<>();
 		HashMap<V,ArrayList<V>> neighbours = new HashMap<>();
 		HashSet<V> visited = new HashSet<>();
 
-		size(g, root, count, visited, neighbours);
+		size(g, root, SubtreeSize, visited, neighbours);
 
 		ArrayList<V> leaves = new ArrayList<>();
 		ArrayList<V> nodes = new ArrayList<>();
@@ -100,7 +101,7 @@ public class ProblemSolver implements IProblem {
 		}
 
 		HashSet<V> subTrees = new HashSet<>();
-		Comparator<V> compareSize = Comparator.comparingInt(count::get);
+		Comparator<V> compareSize = Comparator.comparingInt(SubtreeSize::get);
 		nodes.sort(Collections.reverseOrder(compareSize));
 		subTrees.add(nodes.get(0));
 
@@ -117,8 +118,8 @@ public class ProblemSolver implements IProblem {
 				V newNode = null;
 
 				for (V neighbor : neighbours.get(rootNode)){
-					if (count.get(neighbor) > i){
-						i = count.get(neighbor);
+					if (SubtreeSize.get(neighbor) > i){
+						i = SubtreeSize.get(neighbor);
 						newNode = neighbor;
 					}
 				}
@@ -130,16 +131,14 @@ public class ProblemSolver implements IProblem {
 		return new Edge<>(leaves.get(0),leaves.get(1));
 	}
 
-
 	/**
-	 * modified size-method from PowerOutage class in Main.Test.problemSolver package. Finds the size of a node.
-	 * Size = number of children. Recursive.
-	 * @param g graph to consider
-	 * @param node node to check size
-	 * @param count hashmap contain node and its size (num children)
-	 * @param visited set of nodes which have been visited
-	 * @param neighbours hashmap of node and its neighbors.
-	 * @return count of children
+	 * Calculates the size of each subtree.
+	 * @param g the graph
+	 * @param node the node to start from
+	 * @param count hashmap to store the size of each subtree
+	 * @param visited set of visited nodes
+	 * @param neighbours hashmap to store the neighbours of each node
+	 * @return the size of the subtree
 	 */
 	public <V> int size(Graph<V> g, V node, HashMap <V, Integer> count, HashSet <V> visited, HashMap <V, ArrayList<V>> neighbours ){
 		int counter = 1;

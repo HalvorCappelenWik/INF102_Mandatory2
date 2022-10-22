@@ -6,6 +6,13 @@ import java.util.LinkedList;
 
 public class BFS {
 
+    /**
+     * Performs a breadth first search on a graph starting at a given vertex.
+     * @param g the graph to search
+     * @param root the vertex to start the search at
+     * @return a map of each vertex to its parent in the search tree
+     * @param <T> the type of the vertices in the graph
+     */
     public static <T> HashMap<T,T> bfs(Graph<T> g, T root) {
         HashSet<T> found = new HashSet<>();
         LinkedList<Edge<T>> toSearch = new LinkedList<>();
@@ -44,7 +51,7 @@ public class BFS {
      * Adds a node to a set. And adds all the adjacent edges of the given node to a list,
      * only if the node of the adjacent edges is not in the set.
      * @param g the graph from which the node is from
-     * @param found the set from wich to add the node
+     * @param found the set from which to add the node
      * @param toSearch the list to add the adjacent edges of the node
      * @param newNode the node
      */

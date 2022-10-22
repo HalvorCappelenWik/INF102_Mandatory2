@@ -32,7 +32,10 @@ This is done with the path method, which takes a node and iterate through the bf
 I then check when each of the respective paths (node -> power-station) has a node in common. This will be the least common ancestor.
 
 ## Task 3 - addRedundant
-My plan for the implementation of the addRedundant method was to 
+My plan for the implementation of the addRedundant was that if I were able to find the two biggest subtrees and add an edge between leaves of these trees, this would
+cause as small outage as possible if one power-cable stops working. 
+
+To do this I first 
 
 
 
