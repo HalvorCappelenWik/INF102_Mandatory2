@@ -19,9 +19,17 @@ to the list with the mst-edges. Then we update the found set and updates the toS
 
 Lastly we return the list with the edges forming the minimum spanning tree. 
 
-
 ## Task 2 - lca
-*Enter description*
+My plan for the implementation of the least common ancestor method was to use breadth first search from the root (power-station) and through the graph, and then find the respective paths to each of the nodes with no power. 
+And then check when these two paths has a common node, this node would then be the least common ancestor. 
+
+My BFS implementation: 
+Same as in lecture, but instead of just returning the furthest node I return a hashmap of all nodes and their parent node according to BFS. 
+
+My lca method implementation: 
+First I conduct a bfs on the graph, retrieving a hashmap of all nodes and parent nodes. Then I find the path from the node with no power to the power-station with the help of the bfs.
+This is done with the path method, which takes a node and iterate through the bfs hashmap and adds all the nodes on their way from the node to the power-station (see implementation). 
+I then check when each of the respective paths (node -> power-station) has a node in common. This will be the least common ancestor.
 
 ## Task 3 - addRedundant
 *Enter description*

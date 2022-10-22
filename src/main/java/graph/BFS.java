@@ -9,8 +9,10 @@ public class BFS {
     public static <T> HashMap<T,T> bfs(Graph<T> g, T root) {
         HashSet<T> found = new HashSet<>();
         LinkedList<Edge<T>> toSearch = new LinkedList<>();
-        HashMap<T,T> parents = new HashMap<>();
-        parents.put(root, null);
+
+        HashMap<T,T> connectedNodes = new HashMap<>();
+        connectedNodes.put(root, null);
+
         update(g,found,toSearch,root);
 
         while (!toSearch.isEmpty()) {
@@ -20,10 +22,10 @@ public class BFS {
 
             if (found.contains(newNode)) continue;
 
-            parents.put(newNode,foundNode);
+            connectedNodes.put(newNode,foundNode);
             update(g, found, toSearch, newNode);
         }
-        return parents;
+        return connectedNodes;
     }
 
     private static <T> T foundNode(Edge<T> e, HashSet<T> found) {
@@ -32,10 +34,9 @@ public class BFS {
         throw new IllegalArgumentException("e should have an endpoint in found");
     }
 
-
-    private static <T> void update(Graph<T> g, HashSet<T> found, LinkedList<Edge<T>> toSearch, T node) {
-        found.add(node);
-        for (Edge<T> edge : g.adjacentEdges(node)) {
+    private static <T> void update(Graph<T> g, HashSet<T> found, LinkedList<Edge<T>> toSearch, T newNode) {
+        found.add(newNode);
+        for (Edge<T> edge : g.adjacentEdges(newNode)) {
             if (found.contains(edge.a) && found.contains(edge.b)) {
                 continue;
             }

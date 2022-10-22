@@ -30,7 +30,7 @@ public interface IProblem {
 	 * of a power outage.
 	 * 1. The point needs to be adjacent to a power cable such that a failure of
 	 * that power cable would cause
-	 * both the two given points to loose power.
+	 * both the two given points to lose power.
 	 * 2. The point needs to be as close as possible to the two points given.
 	 * 
 	 * The problem is equivalent to:

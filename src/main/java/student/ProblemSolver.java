@@ -46,11 +46,10 @@ public class ProblemSolver implements IProblem {
 	public <V> V lca(Graph<V> g, V root, V u, V v) {
 
 		new BFS();
-		HashMap<V, V> breadthFirstSearch = BFS.bfs(g,root);
+		HashMap<V, V> bfs = BFS.bfs(g,root);
 
-		ArrayList<V> pathToU = path(u, breadthFirstSearch);
-		ArrayList<V> pathToV = path(v, breadthFirstSearch);
-
+		ArrayList<V> pathToU = path(u, bfs);
+		ArrayList<V> pathToV = path(v, bfs);
 
 		for (V node : pathToV) {
 			if (pathToU.contains(node))
@@ -59,12 +58,11 @@ public class ProblemSolver implements IProblem {
 		throw new IllegalArgumentException("No LCA found");
 		}
 
-
-	private <V> ArrayList<V> path(V parent, HashMap<V,V> breadthFirstSearch) {
+	private <V> ArrayList<V> path(V node, HashMap<V,V> breadthFirstSearch) {
 		ArrayList<V> path = new ArrayList<>();
-		while (parent != null) {
-			path.add(parent);
-			parent = breadthFirstSearch.get(parent);
+		while (node != null) {
+			path.add(node);
+			node = breadthFirstSearch.get(node);
 		}
 		return path;
 	}
