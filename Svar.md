@@ -32,7 +32,8 @@ This is done with the path method, which takes a node and iterate through the bf
 I then check when each of the respective paths (node -> power-station) has a node in common. This will be the least common ancestor.
 
 ## Task 3 - addRedundant
-*Enter description*
+My plan for the implementation of the addRedundant method was to 
+
 
 
 # Runtime Analysis

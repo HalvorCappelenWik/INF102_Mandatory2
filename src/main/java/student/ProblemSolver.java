@@ -35,6 +35,14 @@ public class ProblemSolver implements IProblem {
 		return mstEdges;
 	}
 
+	/**
+	 * Adds a node to a list.
+	 * Adds all the edges which has endpoint equal to the given node in a list.
+	 * @param g the graph from which the node is from
+	 * @param node the node
+	 * @param found the list to add the node
+	 * @param toSearch the list to add the edges with equal endpoint as the node
+	 */
 	private  <V, E extends Comparable<E>> void isVisited(WeightedGraph<V, E> g, V node, HashSet<V> found, PriorityQueue<Edge<V>> toSearch) {
 		found.add(node);
 		for (Edge<V> edge : g.adjacentEdges(node)) {
@@ -58,11 +66,17 @@ public class ProblemSolver implements IProblem {
 		throw new IllegalArgumentException("No LCA found");
 		}
 
-	private <V> ArrayList<V> path(V node, HashMap<V,V> breadthFirstSearch) {
+	/**
+	 * Finds a path form node to source of graph with the help of bfs.
+	 * @param node the node to start the path
+	 * @param bfs hashmap of nodes and parents constructed with bfs.
+	 * @return path represented as an arraylist of nodes
+	 */
+	private <V> ArrayList<V> path(V node, HashMap<V,V> bfs) {
 		ArrayList<V> path = new ArrayList<>();
 		while (node != null) {
 			path.add(node);
-			node = breadthFirstSearch.get(node);
+			node = bfs.get(node);
 		}
 		return path;
 	}
@@ -118,14 +132,14 @@ public class ProblemSolver implements IProblem {
 
 
 	/**
-	 * modified size-method from PowerOutage class in Main.Test.problemsolver package
-	 * @param g
-	 * @param node
-	 * @param count
-	 * @param visited
-	 * @param neighbours
-	 * @return
-	 * @param <V>
+	 * modified size-method from PowerOutage class in Main.Test.problemSolver package. Finds the size of a node.
+	 * Size = number of children. Recursive.
+	 * @param g graph to consider
+	 * @param node node to check size
+	 * @param count hashmap contain node and its size (num children)
+	 * @param visited set of nodes which have been visited
+	 * @param neighbours hashmap of node and its neighbors.
+	 * @return count of children
 	 */
 	public <V> int size(Graph<V> g, V node, HashMap <V, Integer> count, HashSet <V> visited, HashMap <V, ArrayList<V>> neighbours ){
 		int counter = 1;

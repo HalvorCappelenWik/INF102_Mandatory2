@@ -28,12 +28,26 @@ public class BFS {
         return connectedNodes;
     }
 
-    private static <T> T foundNode(Edge<T> e, HashSet<T> found) {
-        if (found.contains(e.a)) return e.a;
-        if (found.contains(e.b)) return e.b;
-        throw new IllegalArgumentException("e should have an endpoint in found");
+    /**
+     * Checks if the endpoint of an edge is in a set, if so return that endpoint (node)
+     * @param edge to check its endpoints
+     * @param found set with nodes to check with
+     * @return the node which is in the set
+     */
+    private static <T> T foundNode(Edge<T> edge, HashSet<T> found) {
+        if (found.contains(edge.a)) return edge.a;
+        if (found.contains(edge.b)) return edge.b;
+        throw new IllegalArgumentException("Edge should always have an endpoint in the set");
     }
 
+    /**
+     * Adds a node to a set. And adds all the adjacent edges of the given node to a list,
+     * only if the node of the adjacent edges is not in the set.
+     * @param g the graph from which the node is from
+     * @param found the set from wich to add the node
+     * @param toSearch the list to add the adjacent edges of the node
+     * @param newNode the node
+     */
     private static <T> void update(Graph<T> g, HashSet<T> found, LinkedList<Edge<T>> toSearch, T newNode) {
         found.add(newNode);
         for (Edge<T> edge : g.adjacentEdges(newNode)) {
