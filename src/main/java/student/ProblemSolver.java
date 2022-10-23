@@ -124,7 +124,6 @@ public class ProblemSolver implements IProblem {
 					}
 				}
 				rootNode = newNode;
-
 			}
 			leaves.add(rootNode);
 		}

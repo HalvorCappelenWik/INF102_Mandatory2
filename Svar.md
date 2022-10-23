@@ -35,9 +35,9 @@ I then check when each of the respective paths (node -> power-station) has a nod
 My plan for the implementation of the addRedundant was that if I were able to find the two biggest subtrees and add an edge between leaves of these trees, this would
 cause as small outage as possible if one power-cable stops working. 
 
-To do this I first 
-
-
+To do this I created a help-method which will calculate the size of all the subtrees (number of children) in our graph and store this in a hashmap (Modified size-method from test.problemSolver.PowerOutage). This method works recursively down a three. 
+Then in the addRedundant method I choose the two biggest subtrees. Then I traverse through these subtrees, and finds the leaf of the trees (a leaf will have degree = 1). 
+Then I return a new edge between these two leafs.
 
 # Runtime Analysis
 For each method of the different strategies give a runtime analysis in Big-O notation and a description of why it has this runtime.
