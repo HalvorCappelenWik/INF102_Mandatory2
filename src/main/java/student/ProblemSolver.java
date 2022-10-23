@@ -139,7 +139,7 @@ public class ProblemSolver implements IProblem {
 	 * @param neighbours hashmap to store the neighbours of each node
 	 * @return the size of the subtree
 	 */
-	public <V> int size(Graph<V> g, V node, HashMap <V, Integer> count, HashSet <V> visited, HashMap <V, ArrayList<V>> neighbours ){
+	public <V> int size(Graph<V> g, V node, HashMap <V, Integer> count, HashSet <V> visited, HashMap <V, ArrayList<V>> neighbours){
 		int counter = 1;
 		visited.add(node);
 		ArrayList<V> n = new ArrayList<>();

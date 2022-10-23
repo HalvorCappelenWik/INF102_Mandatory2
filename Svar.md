@@ -44,10 +44,35 @@ For each method of the different strategies give a runtime analysis in Big-O not
 
 **If you have implemented any helper methods you must add these as well.**
 
+### MST
 * ``mst(WeightedGraph<T, E> g)``: O(?)
     * *Insert description of why the method has the given runtime*
+  ##### Helper methods 
+* ``isVisited(WeightedGraph<V, E> g, V node, HashSet<V> found, PriorityQueue<Edge<V>> toSearch)``: O(?)
+  * *Insert description of why the method has the given runtime*
+
+
+### LCA 
 * ``lca(Graph<T> g, T root, T u, T v)``: O(?)
     * *Insert description of why the method has the given runtime*
+  ##### Helper methods
+
+* ``bfs((Graph<T> g, T root))``: O(?)
+  * *Insert description of why the method has the given runtime*
+* ``found(Edge<T> edge, HashSet<T> found)``: O(?)
+  * *Insert description of why the method has the given runtime*
+* ``update(Graph<T> g, HashSet<T> found, LinkedList<Edge<T>> toSearch, T newNode)``: O(?)
+  * *Insert description of why the method has the given runtime*
+* ``path(V node, HashMap<V,V> bfs)``: O(?)
+  * *Insert description of why the method has the given runtime*
+
+
+### AddRedundant
 * ``addRedundant(Graph<T> g, T root)``: O(?)
     * *Insert description of why the method has the given runtime*
+  ##### Helper methods
+
+* ``size(Graph<V> g, V node, HashMap <V, Integer> count, HashSet <V> visited, HashMap <V, ArrayList<V>> neighbours )``: O(?)
+  * *Insert description of why the method has the given runtime*
+
 
