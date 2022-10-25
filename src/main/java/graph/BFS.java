@@ -1,67 +1,51 @@
 package graph;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 
 public class BFS {
 
+    //m - number of edges in the graph
+    //n - number of nodes in the graph
+
     /**
      * Performs a breadth first search on a graph starting at a given vertex.
-     * @param g the graph to search
-     * @param root the vertex to start the search at
+     * Modified bfs from lecture 11.
+     * @param g    the graph to search
+     * @param root the vertex to root the search at
+     * @param <V>  the type of the vertices in the graph
      * @return a map of each vertex to its parent in the search tree
-     * @param <T> the type of the vertices in the graph
      */
-    public static <T> HashMap<T,T> bfs(Graph<T> g, T root) {
-        HashSet<T> found = new HashSet<>();
-        LinkedList<Edge<T>> toSearch = new LinkedList<>();
+    public static <V> HashMap<V, V> bfs(Graph<V> g, V root) { //O(m)
+        HashMap<V, V> bfs = new HashMap<>(); //O(1)
+        LinkedList<V> toSearch = new LinkedList<>(); //O(1)
+        HashSet<V> found = new HashSet<>(); //O(1)
 
-        HashMap<T,T> connectedNodes = new HashMap<>();
-        connectedNodes.put(root, null);
+        found.add(root);  //O(1)
+        bfs.put(root, null); //O(1)
+        addNeighbours(root, g, toSearch, bfs); //O(n) if node is neighbour of all nodes
 
-        update(g,found,toSearch,root);
-
-        while (!toSearch.isEmpty()) {
-            Edge<T> e = toSearch.removeFirst();
-            T foundNode = foundNode(e, found);
-            T newNode = e.getOtherNode(foundNode);
-
-            if (found.contains(newNode)) continue;
-
-            connectedNodes.put(newNode,foundNode);
-            update(g, found, toSearch, newNode);
-        }
-        return connectedNodes;
-    }
-
-    /**
-     * Checks if the endpoint of an edge is in a set, if so return that endpoint (node)
-     * @param edge to check its endpoints
-     * @param found set with nodes to check with
-     * @return the node which is in the set
-     */
-    private static <T> T foundNode(Edge<T> edge, HashSet<T> found) {
-        if (found.contains(edge.a)) return edge.a;
-        if (found.contains(edge.b)) return edge.b;
-        throw new IllegalArgumentException("Edge should always have an endpoint in the set");
-    }
-
-    /**
-     * Adds a node to a set. And adds all the adjacent edges of the given node to a list,
-     * only if the node of the adjacent edges is not in the set.
-     * @param g the graph from which the node is from
-     * @param found the set from which to add the node
-     * @param toSearch the list to add the adjacent edges of the node
-     * @param newNode the node
-     */
-    private static <T> void update(Graph<T> g, HashSet<T> found, LinkedList<Edge<T>> toSearch, T newNode) {
-        found.add(newNode);
-        for (Edge<T> edge : g.adjacentEdges(newNode)) {
-            if (found.contains(edge.a) && found.contains(edge.b)) {
+        while (!toSearch.isEmpty()) { //O(m) -> while-loop -> for each node we get the sum of its degree.
+            V next = toSearch.removeLast(); //O(1)
+            if (found.contains(next)) //O(1) expected
                 continue;
+            //iterations past here once of each node, O(n)
+            found.add(next); //O(1)
+            addNeighbours(next, g, toSearch, bfs); //O(degree(next))
+        }
+        return bfs;
+    }
+    // We have a connected graph, where the while-loop goes through each degree, hence O(m)
+
+    private static <V > void addNeighbours (V node, Graph <V> g, LinkedList<V> toSearch, HashMap<V,V> bfs) {
+        for (V neighbour : g.neighbours(node)) { //O(degree)
+            if (!bfs.containsKey(neighbour)) {
+                bfs.put(neighbour, node);
+                toSearch.addFirst(neighbour);
             }
-            toSearch.addLast(edge);
         }
     }
+
 }
