@@ -102,8 +102,8 @@ public class ProblemSolver implements IProblem {
 	public <V> Edge<V> addRedundant(Graph<V> g, V root) {
 		HashMap<V,Integer> size = new HashMap<>(); //O(1)
 		HashSet<V> visited = new HashSet<>(); //O(1)
-		HashMap<V, LinkedList<V>> nodeNeighbours = new HashMap<>();
-		size(g, root, size, visited, nodeNeighbours);
+		HashMap<V, LinkedList<V>> nodeNeighbours = new HashMap<>(); //O(1)
+		size(g, root, size, visited, nodeNeighbours); //O(
 
 		return findBestEdge(size, nodeNeighbours, g, root);
 	}

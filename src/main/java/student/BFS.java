@@ -1,4 +1,6 @@
-package graph;
+package student;
+
+import graph.Graph;
 
 import java.util.ArrayList;
 import java.util.HashMap;
