@@ -42,7 +42,7 @@ public class BFS {
     // We have a connected graph, where the while-loop goes through each degree, hence O(m)
 
     private static <V > void addNeighbours (V node, Graph <V> g, LinkedList<V> toSearch, HashMap<V,V> bfs) {
-        for (V neighbour : g.neighbours(node)) { //O(degree)
+        for (V neighbour : g.neighbours(node)) { //O(degree(node))
             if (!bfs.containsKey(neighbour)) {
                 bfs.put(neighbour, node);
                 toSearch.addFirst(neighbour);

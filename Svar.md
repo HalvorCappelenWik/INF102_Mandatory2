@@ -21,7 +21,7 @@ Lastly we return the list with the edges forming the minimum spanning tree.
 
 ## Task 2 - lca
 My plan for the implementation of the least common ancestor method was to use breadth first search from the root (power-station) and through the graph, and then find the respective paths to each of the nodes with no power. 
-And then check when these two paths has a common node, this node would then be the least common ancestor. 
+And then check when these two paths has a common node (iterating from node the furthest away from root and towards root), this node would then be the least common ancestor. 
 
 My BFS implementation: 
 Same as in lecture, but instead of just returning the furthest node I return a hashmap of all nodes and their parent node according to BFS. 
@@ -29,10 +29,10 @@ Same as in lecture, but instead of just returning the furthest node I return a h
 My lca method implementation: 
 First I conduct a bfs on the graph, retrieving a hashmap of all nodes and parent nodes. Then I find the path from the node with no power to the power-station with the help of the bfs.
 This is done with the path method, which takes a node and iterate through the bfs hashmap and adds all the nodes on their way from the node to the power-station (see implementation). 
-I then check when each of the respective paths (node -> power-station) has a node in common. This will be the least common ancestor.
+I then check when each of the respective paths (from node -> power-station) has a node in common. This will be the least common ancestor.
 
 ## Task 3 - addRedundant
-My plan for the implementation of the addRedundant was that if I were able to find the two biggest subtrees and add an edge between leaves of these trees, this would
+Myplan for the implementation of the addRedundant was that if I were able to find the two biggest subtrees and add an edge between leaves of these trees, this would
 cause as small outage as possible if one power-cable stops working. 
 
 To do this I created a help-method which will calculate the size of all the subtrees (number of children) in our graph and store this in a hashmap (Modified size-method from test.problemSolver.PowerOutage). This method works recursively down a three. 
@@ -59,9 +59,7 @@ For each method of the different strategies give a runtime analysis in Big-O not
 
 * ``bfs((Graph<T> g, T root))``: O(?)
   * *Insert description of why the method has the given runtime*
-* ``found(Edge<T> edge, HashSet<T> found)``: O(?)
-  * *Insert description of why the method has the given runtime*
-* ``update(Graph<T> g, HashSet<T> found, LinkedList<Edge<T>> toSearch, T newNode)``: O(?)
+* ``addNeighbours (V node, Graph <V> g, LinkedList<V> toSearch, HashMap<V,V> bfs)``: O(?)
   * *Insert description of why the method has the given runtime*
 * ``path(V node, HashMap<V,V> bfs)``: O(?)
   * *Insert description of why the method has the given runtime*
@@ -72,6 +70,8 @@ For each method of the different strategies give a runtime analysis in Big-O not
     * *Insert description of why the method has the given runtime*
   ##### Helper methods
 
+* ``EdgeBetweenSubtree(HashMap<V, Integer> size, HashMap<V, LinkedList<V>> nodeNeighbours, Graph<V> g, V root)``: O(?)
+  * *Insert description of why the method has the given runtime*
 * ``size(Graph<V> g, V node, HashMap <V, Integer> count, HashSet <V> visited, HashMap <V, ArrayList<V>> neighbours )``: O(?)
   * *Insert description of why the method has the given runtime*
 

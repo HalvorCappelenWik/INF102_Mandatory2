@@ -1,7 +1,6 @@
 package student;
 
 import java.util.*;
-
 import graph.*;
 
 public class ProblemSolver implements IProblem {
@@ -52,26 +51,24 @@ public class ProblemSolver implements IProblem {
 	 */
 	private  <V, E extends Comparable<E>> void isVisited(WeightedGraph<V, E> g, V node, HashSet<V> found, PriorityQueue<Edge<V>> toSearch) { //O(log m)
 		found.add(node); //O(1)
-		for (Edge<V> edge : g.adjacentEdges(node)) { //O(degree)
+		for (Edge<V> edge : g.adjacentEdges(node)) { //O(degree(node))
 			toSearch.add(edge); //O(log m)
 		}
 	}
 
 		@Override
-	public <V> V lca(Graph<V> g, V root, V u, V v) { //O(n+m)
-
+	public <V> V lca(Graph<V> g, V root, V u, V v) { //O(m + n + n + n) = O(n)
 		new BFS();
 		HashMap<V, V> bfs = BFS.bfs(g,root); //O(m)
+		LinkedList<V> pathU = path(u, bfs); //O(n)
+		LinkedList<V> pathV = path(v, bfs); //O(n)
 
-		LinkedList<V> pathToU = path(u, bfs); //O(n)
-		LinkedList<V> pathToV = path(v, bfs); //O(n)
 
-
-		for (V node : pathToV) { //O(n)
-			if (new HashSet<>(pathToU).contains(node))
+		for (V node : pathV) { //O(n)
+			if (new HashSet<>(pathU).contains(node))
 				return node;
 		}
-		throw new IllegalArgumentException("No LCA found");
+		throw new IllegalArgumentException("No LCA between the given nodes.");
 		}
 
 
@@ -81,7 +78,7 @@ public class ProblemSolver implements IProblem {
 	 * @param bfs the map of each node to its parent in the search tree
 	 * @return the path from the node to the root
 	 */
-	private <V> LinkedList<V> path(V node, HashMap<V,V> bfs) {
+	private <V> LinkedList<V> path(V node, HashMap<V,V> bfs) { //O(n)
 		LinkedList<V> path = new LinkedList<>();
 		while (node != null) { //O(n)
 			path.add(node);
@@ -103,52 +100,52 @@ public class ProblemSolver implements IProblem {
 		HashMap<V,Integer> size = new HashMap<>(); //O(1)
 		HashSet<V> visited = new HashSet<>(); //O(1)
 		HashMap<V, LinkedList<V>> nodeNeighbours = new HashMap<>(); //O(1)
-		size(g, root, size, visited, nodeNeighbours); //O(
+		size(g, root, size, visited, nodeNeighbours); //O(n)
 
-		return findBestEdge(size, nodeNeighbours, g, root);
+		LinkedList<V> nodes = new LinkedList<>(); //O(1)
+		HashSet<V> subTrees = new HashSet<>(); //O(1)
+
+		for (V rootNeighbours : g.neighbours(root)) {  //O(n)
+			nodes.add(rootNeighbours);
+		}
+
+		Comparator<V> compareSize = Comparator.comparingInt(size::get); //O(1)
+		nodes.sort(Collections.reverseOrder(compareSize)); //O(n log n)
+
+		subTrees.add(nodes.poll()); //O(1)
+		if (g.degree(root) > 1) subTrees.add(nodes.poll()); //O(1)
+		else subTrees.add(root); //O(1)
+
+		return EdgeBetweenSubtree(subTrees, size, nodeNeighbours, g);
 	}
 
 
 	/**
-	 * Find leaf of the two biggest subtree and return the edge between them.
+	 * Find leaf between two subtrees and return the edge between them.
 	 * @param size
 	 * @param nodeNeighbours
 	 * @return
 	 * @param <V>
 	 */
-	public <V> Edge<V> findBestEdge(HashMap<V, Integer> size, HashMap<V, LinkedList<V>> nodeNeighbours, Graph<V> g, V root) {
-		LinkedList<V> leaves = new LinkedList<>();
-		LinkedList<V> nodes = new LinkedList<>();
-		HashSet<V> subTrees = new HashSet<>();
+	public <V> Edge<V> EdgeBetweenSubtree(HashSet<V> subTrees, HashMap<V, Integer> size, HashMap<V, LinkedList<V>> nodeNeighbours, Graph<V> g) {
+		LinkedList<V> leaves = new LinkedList<>(); //O(1)
 
-		for (V rootNeighbours : g.neighbours(root)){
-			nodes.add(rootNeighbours);
-		}
+		for (V rootNode : subTrees) { //O(n)
+			while (g.degree(rootNode) != 1) { //O(n)
+				int i = 0; //O(1)
+				V tempNode = null; //O(1)
 
-		Comparator<V> compareSize = Comparator.comparingInt(size::get);
-		nodes.sort(Collections.reverseOrder(compareSize));
-
-		subTrees.add(nodes.poll());
-		if (g.degree(root) > 1){subTrees.add(nodes.poll());}
-		else {leaves.add(root);}
-
-
-		for (V rootNode : subTrees){
-			while (g.degree(rootNode) != 1){
-				int i = 0;
-				V tempNode = null;
-
-				for (V neighbor : nodeNeighbours.get(rootNode)){
-					if (size.get(neighbor) > i){
-						i = size.get(neighbor);
-						tempNode = neighbor;
+				for (V neighbor : nodeNeighbours.get(rootNode)) { //O(n)
+					if (size.get(neighbor) > i) { //O(1)
+						i = size.get(neighbor); //O(1)
+						tempNode = neighbor; //O(1)
 					}
 				}
-				rootNode = tempNode;
+				rootNode = tempNode; //O(1)
 			}
-			leaves.add(rootNode);
+			leaves.add(rootNode); //O(1)
 		}
-		return new Edge<>(leaves.getFirst(),leaves.getLast());
+		return new Edge<>(leaves.getFirst(), leaves.getLast()); //O(1)
 	}
 
 
@@ -165,15 +162,15 @@ public class ProblemSolver implements IProblem {
 		int counter = 1;
 
 		visited.add(node); //(1)
-		LinkedList<V> n = new LinkedList<>();
-		for(V children : g.neighbours(node)){  //O(degree(node))
+		LinkedList<V> n = new LinkedList<>(); //O(1)
+		for(V children : g.neighbours(node)){  //O(n)
 			if(!visited.contains(children)){ //O(1)
 				n.add(children); //O(1)
 				counter += size(g, children, count, visited, neighbours);
 			}
 		}
-		neighbours.put(node,n);
-		count.put(node, counter);
+		neighbours.put(node,n); //O(1)
+		count.put(node, counter); //O(1)
 		return counter;
 	}
 }
