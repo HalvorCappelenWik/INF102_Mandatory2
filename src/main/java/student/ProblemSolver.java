@@ -97,24 +97,27 @@ public class ProblemSolver implements IProblem {
 	 */
 	@Override
 	public <V> Edge<V> addRedundant(Graph<V> g, V root) {
-		HashMap<V,Integer> size = new HashMap<>(); //O(1)
-		HashSet<V> visited = new HashSet<>(); //O(1)
-		HashMap<V, LinkedList<V>> nodeNeighbours = new HashMap<>(); //O(1)
+		HashMap<V,Integer> size = new HashMap<>();
+		HashSet<V> visited = new HashSet<>();
+		HashMap<V, LinkedList<V>> nodeNeighbours = new HashMap<>();
 		size(g, root, size, visited, nodeNeighbours); //O(n)
 
-		LinkedList<V> nodes = new LinkedList<>(); //O(1)
-		HashSet<V> subTrees = new HashSet<>(); //O(1)
+
+		LinkedList<V> nodes = new LinkedList<>();
+		HashSet<V> subTrees = new HashSet<>();
 
 		for (V rootNeighbours : g.neighbours(root)) {  //O(n)
-			nodes.add(rootNeighbours);
+			nodes.add(rootNeighbours); //O(1)
 		}
 
-		Comparator<V> compareSize = Comparator.comparingInt(size::get); //O(1)
-		nodes.sort(Collections.reverseOrder(compareSize)); //O(n log n)
+		Comparator<V> compareSize = Comparator.comparingInt(size::get);
+		//nodes.sort(Collections.reverseOrder(compareSize)); //O(n log n)
+		subTrees.add(Collections.max(nodes, compareSize)); //O(n)
+		nodes.remove(Collections.max(nodes, compareSize)); //O(n)
 
-		subTrees.add(nodes.poll()); //O(1)
-		if (g.degree(root) > 1) subTrees.add(nodes.poll()); //O(1)
-		else subTrees.add(root); //O(1)
+		if (g.degree(root) > 1) { //O(log n)
+			subTrees.add(Collections.max(nodes, compareSize)); //O(n)
+		} else subTrees.add(root);
 
 		return EdgeBetweenSubtree(subTrees, size, nodeNeighbours, g);
 	}
@@ -128,24 +131,24 @@ public class ProblemSolver implements IProblem {
 	 * @param <V>
 	 */
 	public <V> Edge<V> EdgeBetweenSubtree(HashSet<V> subTrees, HashMap<V, Integer> size, HashMap<V, LinkedList<V>> nodeNeighbours, Graph<V> g) {
-		LinkedList<V> leaves = new LinkedList<>(); //O(1)
+		LinkedList<V> leaves = new LinkedList<>();
 
-		for (V rootNode : subTrees) { //O(n)
-			while (g.degree(rootNode) != 1) { //O(n)
+		for (V rootNode : subTrees) { //We have only 2 subtrees, therefor for-loop will only run twice.
+			while (g.degree(rootNode) != 1) { //O(log n) want to find leaf, hence keep iterating until degree of node = 1.
 				int i = 0; //O(1)
 				V tempNode = null; //O(1)
 
-				for (V neighbor : nodeNeighbours.get(rootNode)) { //O(n)
-					if (size.get(neighbor) > i) { //O(1)
-						i = size.get(neighbor); //O(1)
-						tempNode = neighbor; //O(1)
+				for (V neighbor : nodeNeighbours.get(rootNode)) { //O(1/2n) finding the node with most neighbours.
+					if (size.get(neighbor) > i) {
+						i = size.get(neighbor);
+						tempNode = neighbor;
 					}
 				}
-				rootNode = tempNode; //O(1)
+				rootNode = tempNode;
 			}
-			leaves.add(rootNode); //O(1)
+			leaves.add(rootNode);
 		}
-		return new Edge<>(leaves.getFirst(), leaves.getLast()); //O(1)
+		return new Edge<>(leaves.getFirst(), leaves.getLast());
 	}
 
 
@@ -161,16 +164,16 @@ public class ProblemSolver implements IProblem {
 	public <V> int size(Graph<V> g, V node, HashMap <V, Integer> count, HashSet <V> visited, HashMap <V, LinkedList<V>> neighbours){
 		int counter = 1;
 
-		visited.add(node); //(1)
-		LinkedList<V> n = new LinkedList<>(); //O(1)
-		for(V children : g.neighbours(node)){  //O(n)
-			if(!visited.contains(children)){ //O(1)
-				n.add(children); //O(1)
-				counter += size(g, children, count, visited, neighbours);
+		visited.add(node);
+		LinkedList<V> childrenList = new LinkedList<>();
+		for(V child : g.neighbours(node)){  //O(n)
+			if(!visited.contains(child)){
+				childrenList.add(child);
+				counter += size(g, child, count, visited, neighbours); //The function is called only if node has not been visited
 			}
 		}
-		neighbours.put(node,n); //O(1)
-		count.put(node, counter); //O(1)
+		neighbours.put(node,childrenList);
+		count.put(node, counter);
 		return counter;
 	}
 }
