@@ -9,29 +9,29 @@ public class ProblemSolver implements IProblem {
 	//n - number of nodes in the graph
 
 	@Override
-	public <V, E extends Comparable<E>> List<Edge<V>> mst(WeightedGraph<V, E> g) { //O(n + log m + (m log m)) = O(m log m)
-		ArrayList<Edge<V>> mstEdges = new ArrayList<>(g.numVertices()); //O(1)
-
-
-		if (g.numEdges() < 1) {return mstEdges;} //O(1)
-		HashSet<V> found = new HashSet<>(g.numVertices()); //O(1)
+	public <V, E extends Comparable<E>> List<Edge<V>> mst(WeightedGraph<V, E> g) { //O(n) + O(m log m) + O(m log m) = O(m log m)
+		ArrayList<Edge<V>> mstEdges = new ArrayList<>(g.numVertices());
 		PriorityQueue<Edge<V>> toSearch = new PriorityQueue<>(g); //O(n)
-		V start = g.getFirstNode(); //O(1)
-		found.add(start); //O(1)
+		HashSet<V> found = new HashSet<>(g.numVertices());
 
+		if (g.numEdges() < 1) {
+			return mstEdges;
+		}
 
-		for (Edge<V> edge : g.adjacentEdges(start)) { //O(degree)
+		V start = g.getFirstNode();
+		found.add(start);
+
+		for (Edge<V> edge : g.adjacentEdges(start)) { //O(m)
 			toSearch.add(edge); //O(log m)
 		}
 
 
 		while(!toSearch.isEmpty()) { //O(m)
 			Edge<V> next = toSearch.poll(); //O(log m)
-			if (found.contains(next.a) && found.contains(next.b)) continue; //O(1)
+			if (found.contains(next.a) && found.contains(next.b))
+				continue;
 
-
-			mstEdges.add(next); //O(1)
-
+			mstEdges.add(next);
 
 			isVisited(g, next.a, found, toSearch); //O(log m)
 			isVisited(g, next.b, found, toSearch); //O(log m)
@@ -57,15 +57,15 @@ public class ProblemSolver implements IProblem {
 	}
 
 		@Override
-	public <V> V lca(Graph<V> g, V root, V u, V v) { //O(m + n + n + n) = O(n)
+	public <V> V lca(Graph<V> g, V root, V u, V v) { //O(m) + O(n) + O(n) + O(n) = O(n)
 		new BFS();
 		HashMap<V, V> bfs = BFS.bfs(g,root); //O(m)
 		LinkedList<V> pathU = path(u, bfs); //O(n)
+		HashSet<V> setPathU = new HashSet<>(pathU); //O(n)
 		LinkedList<V> pathV = path(v, bfs); //O(n)
 
-
 		for (V node : pathV) { //O(n)
-			if (new HashSet<>(pathU).contains(node))
+			if (setPathU.contains(node))  //O(1)
 				return node;
 		}
 		throw new IllegalArgumentException("No LCA between the given nodes.");

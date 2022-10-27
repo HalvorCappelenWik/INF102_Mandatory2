@@ -45,7 +45,7 @@ For each method of the different strategies give a runtime analysis in Big-O not
 **If you have implemented any helper methods you must add these as well.**
 
 ### MST
-* ``mst(WeightedGraph<T, E> g)``: O(?)
+* ``mst(WeightedGraph<T, E> g)``: O()
     * *Insert description of why the method has the given runtime*
   ##### Helper methods 
 * ``isVisited(WeightedGraph<V, E> g, V node, HashSet<V> found, PriorityQueue<Edge<V>> toSearch)``: O(?)
