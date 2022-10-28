@@ -72,13 +72,18 @@ For each method of the different strategies give a runtime analysis in Big-O not
 
 
 ### AddRedundant
-* ``addRedundant(Graph<T> g, T root)``: O(?)
-    * 
+* ``addRedundant(Graph<T> g, T root)``: O(n)
+    * Firstly the addRedundant method makes a call to the size method. This would be O(n), since the size method works recursively down our tree storing all the nodes and their size. The recursive function is called at most n times before reaching its base case (all nodes has been visited).
+    * Further on we iterate through the neighbours of root to select the biggest subtree of the neighbours, this is worst case O(n).
+    * Then by the use of Collection.Max with comparator from the hashmap storing each node and their size, we pick the two largest subtrees. Collection.Max on a linkedList is O(n)
+    * We then pass the two biggest subtrees in to the EdgeBetweenSubtree method, which is O(n). 
   ##### Helper methods
 
-* ``EdgeBetweenSubtree(HashMap<V, Integer> size, HashMap<V, LinkedList<V>> nodeNeighbours, Graph<V> g, V root)``: O(?)
-  * *Insert description of why the method has the given runtime*
-* ``size(Graph<V> g, V node, HashMap <V, Integer> count, HashSet <V> visited, HashMap <V, ArrayList<V>> neighbours )``: O(?)
-  * *Insert description of why the method has the given runtime*
+* ``EdgeBetweenSubtree(HashMap<V, Integer> size, HashMap<V, LinkedList<V>> nodeNeighbours, Graph<V> g, V root)``: O(n)
+  * This method wil follow the two biggest subtrees down the graph to a leaf, going to the nodes with the biggest amount of children.  
+  * Worst case is O(n). The method will always go further and further down the graph, and never in the same node more than once. 
+  * See comments in method. 
+* ``size(Graph<V> g, V node, HashMap <V, Integer> count, HashSet <V> visited, HashMap <V, ArrayList<V>> neighbours )``: O(n)
+  * As mentioned, size is a recursive method. Where is called at most n times before reaching its base case (all nodes has been visited).
 
 

@@ -109,8 +109,8 @@ public class ProblemSolver implements IProblem {
 		LinkedList<V> nodes = new LinkedList<>();
 		HashSet<V> subTrees = new HashSet<>();
 
-		for (V rootNeighbours : g.neighbours(root)) {  //O(n)
-			nodes.add(rootNeighbours); //O(1)
+		for (V neighbours : g.neighbours(root)) {  //O(n)
+			nodes.add(neighbours); //O(1)
 		}
 
 		Comparator<V> compareSize = Comparator.comparingInt(size::get);
@@ -124,7 +124,7 @@ public class ProblemSolver implements IProblem {
 			subTrees.add(Collections.max(nodes, compareSize)); //O(n)
 		} else subTrees.add(root); // if degree of root is less than 1, then root-node itself will be subtree.
 
-		return EdgeBetweenSubtree(subTrees, size, nodeNeighbours, g);
+		return EdgeBetweenSubtree(subTrees, size, nodeNeighbours, g); //O(n)
 	}
 
 
