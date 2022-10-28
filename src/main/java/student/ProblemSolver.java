@@ -14,11 +14,11 @@ public class ProblemSolver implements IProblem {
 		PriorityQueue<Edge<V>> toSearch = new PriorityQueue<>(g); //O(n)
 		HashSet<V> found = new HashSet<>(g.numVertices());
 
-		if (g.numEdges() < 1) {
+		if (g.numEdges() < 1) {  // <- if edges of graph is less than 1, there is no mst.
 			return mstEdges;
 		}
 
-		V start = g.getFirstNode();
+		V start = g.getFirstNode(); //O(1)
 		found.add(start);
 
 		for (Edge<V> edge : g.adjacentEdges(start)) { //O(m)
@@ -28,7 +28,7 @@ public class ProblemSolver implements IProblem {
 
 		while(!toSearch.isEmpty()) { //O(m)
 			Edge<V> next = toSearch.poll(); //O(log m)
-			if (found.contains(next.a) && found.contains(next.b))
+			if (found.contains(next.a) && found.contains(next.b)) //O(1)
 				continue;
 
 			mstEdges.add(next);
@@ -60,9 +60,12 @@ public class ProblemSolver implements IProblem {
 	public <V> V lca(Graph<V> g, V root, V u, V v) { //O(m) + O(n) + O(n) + O(n) = O(n)
 		new BFS();
 		HashMap<V, V> bfs = BFS.bfs(g,root); //O(m)
+
+
 		LinkedList<V> pathU = path(u, bfs); //O(n)
 		HashSet<V> setPathU = new HashSet<>(pathU); //O(n)
 		LinkedList<V> pathV = path(v, bfs); //O(n)
+
 
 		for (V node : pathV) { //O(n)
 			if (setPathU.contains(node))  //O(1)
@@ -115,9 +118,11 @@ public class ProblemSolver implements IProblem {
 		subTrees.add(Collections.max(nodes, compareSize)); //O(n)
 		nodes.remove(Collections.max(nodes, compareSize)); //O(n)
 
+
+
 		if (g.degree(root) > 1) { //O(log n)
 			subTrees.add(Collections.max(nodes, compareSize)); //O(n)
-		} else subTrees.add(root);
+		} else subTrees.add(root); // if degree of root is less than 1, then root-node itself will be subtree.
 
 		return EdgeBetweenSubtree(subTrees, size, nodeNeighbours, g);
 	}
@@ -133,7 +138,7 @@ public class ProblemSolver implements IProblem {
 	public <V> Edge<V> EdgeBetweenSubtree(HashSet<V> subTrees, HashMap<V, Integer> size, HashMap<V, LinkedList<V>> nodeNeighbours, Graph<V> g) {
 		LinkedList<V> leaves = new LinkedList<>();
 
-		for (V rootNode : subTrees) { //We have only 2 subtrees, therefor for-loop will only run twice.
+		for (V rootNode : subTrees) { //We have only 2 subtrees, therefore for-loop will only run twice.
 			while (g.degree(rootNode) != 1) { //O(log n) want to find leaf, hence keep iterating until degree of node = 1.
 				int i = 0; //O(1)
 				V tempNode = null; //O(1)

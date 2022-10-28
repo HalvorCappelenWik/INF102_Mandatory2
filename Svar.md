@@ -7,8 +7,6 @@ My plan for the implementation of my minimum spanning tree method was to use pri
 
 First I create a list where I will store all the edges which will be included in the mst and a set which will control the vertices which have been found when iterating through the graph.
 
-Then, if the graph don't have any edges the method just returns an empty list, because there is no mst, since the graph won't have any subsets of edges. 
-
 Then I create a priorityQueue which will hold the edges that are to be searched. The queue will sort the edges according to the edges with the least weight, since we want the minimum.
 
 I then select a start-node and adds the start-nodes neighbours to the toSearch queue. 
@@ -24,7 +22,7 @@ My plan for the implementation of the least common ancestor method was to use br
 And then check when these two paths has a common node (iterating from node the furthest away from root and towards root), this node would then be the least common ancestor. 
 
 My BFS implementation: 
-Same as in lecture, but instead of just returning the furthest node I return a hashmap of all nodes and their parent node according to BFS. 
+Same as in lecture, but instead of just returning the furthest node I return a hashmap of all nodes and their parent node according to the search. 
 
 My lca method implementation: 
 First I conduct a bfs on the graph, retrieving a hashmap of all nodes and parent nodes. Then I find the path from the node with no power to the power-station with the help of the bfs.
@@ -45,16 +43,25 @@ For each method of the different strategies give a runtime analysis in Big-O not
 **If you have implemented any helper methods you must add these as well.**
 
 ### MST
-* ``mst(WeightedGraph<T, E> g)``: O()
-    * *Insert description of why the method has the given runtime*
-  ##### Helper methods 
-* ``isVisited(WeightedGraph<V, E> g, V node, HashSet<V> found, PriorityQueue<Edge<V>> toSearch)``: O(?)
-  * *Insert description of why the method has the given runtime*
+* ``mst(WeightedGraph<T, E> g)``: O(m log m)
+    * For my mimimum spanning tree implementation, I based my implementation on lecture 11, where we went through prims algorithm to find the minimum spanning tree of a graph. 
+    * More specific this implementation is with minheap for edges, since we want to sort our weighted edges to get minimum. 
+    * For details about the implementation look at description section. 
+    * Creating a priority queue (toSearch) and filling it with our graph is O(n), iterating thru all the edges is O(m) and adding to our pq is O(log m)
+    * This gives us O(m log m). See method for more details. 
+##### Helper methods 
+* ``isVisited(WeightedGraph<V, E> g, V node, HashSet<V> found, PriorityQueue<Edge<V>> toSearch)``: O(log m)
+    * isVisited is my helper method to keep track of the nodes that has been visited in our search. 
+    * For each node which is found, it iterates through its adjacent edges and adds the edges to our toSearch pq. 
+    * Iterating through a nodes adjacent edges is O(degree(node)) and adding to a pq is O(log m)
 
 
 ### LCA 
-* ``lca(Graph<T> g, T root, T u, T v)``: O(?)
-    * *Insert description of why the method has the given runtime*
+* ``lca(Graph<T> g, T root, T u, T v)``: O(n)
+    * In the method for finding the last common ancestor i first conduct a bfs on the graph, this is O(m) (ref Martin's lecture, se comments in code)
+    * I then find the two respected path to node u and v, this is O(n) (path method). 
+    * Lastly i iterate each node in both paths until we find a node that is in common for both paths, this is O(n).
+    * Se method for specifics. 
   ##### Helper methods
 
 * ``bfs((Graph<T> g, T root))``: O(?)
