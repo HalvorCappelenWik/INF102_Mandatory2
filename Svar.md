@@ -60,21 +60,20 @@ For each method of the different strategies give a runtime analysis in Big-O not
 * ``lca(Graph<T> g, T root, T u, T v)``: O(n)
     * In the method for finding the last common ancestor i first conduct a bfs on the graph, this is O(m) (ref Martin's lecture, se comments in code)
     * I then find the two respected path to node u and v, this is O(n) (path method). 
-    * Lastly i iterate each node in both paths until we find a node that is in common for both paths, this is O(n).
-    * Se method for specifics. 
+    * Lastly I iterate each node in both paths until we find a node that is in common for both paths, this is O(n).
+    * See method for specifics. 
   ##### Helper methods
-
-* ``bfs((Graph<T> g, T root))``: O(?)
-  * *Insert description of why the method has the given runtime*
-* ``addNeighbours (V node, Graph <V> g, LinkedList<V> toSearch, HashMap<V,V> bfs)``: O(?)
-  * *Insert description of why the method has the given runtime*
-* ``path(V node, HashMap<V,V> bfs)``: O(?)
-  * *Insert description of why the method has the given runtime*
+* ``bfs((Graph<T> g, T root))``: O(m)
+  * Conducting bfs, implemented as in lecture, is O(m). See comments in method. 
+* ``addNeighbours (V node, Graph <V> g, LinkedList<V> toSearch, HashMap<V,V> bfs)``: O(n)
+  * if a node is neighbour of all nodes then O(n). 
+* ``path(V node, HashMap<V,V> bfs)``: O(n)
+  * Worst case is that if path of node is through all nodes, hence O(n)
 
 
 ### AddRedundant
 * ``addRedundant(Graph<T> g, T root)``: O(?)
-    * *Insert description of why the method has the given runtime*
+    * 
   ##### Helper methods
 
 * ``EdgeBetweenSubtree(HashMap<V, Integer> size, HashMap<V, LinkedList<V>> nodeNeighbours, Graph<V> g, V root)``: O(?)
